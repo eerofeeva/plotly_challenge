@@ -12,17 +12,12 @@ function getResults(sampleId)
 {
     resultsarray= samples.filter(sampleobject => sampleobject.id == sampleId)[0];
     resultsmetadata = metadata.filter(sampleobject => sampleobject.id == sampleId)[0];
-
-    console.log('in getResults sampleId:' + sampleId );
-
     // Use `sample_values` as the values for the bar chart. - my Y values
     values = resultsarray.sample_values;
     // Use `otu_ids` as the labels for the bar chart. - my X values
     ids = resultsarray.otu_ids;     
     // Use `otu_labels` as the hovertext for the chart.
     hovertext = resultsarray.otu_labels;
-
-    console.log('in getResults resultsarray:' + resultsarray);
 }
 
 function optionChanged(sampleId)
@@ -30,6 +25,7 @@ function optionChanged(sampleId)
     getResults(sampleId);
     setMetadata();
     setBarChart();
+    setBubbleChart();
 }
 
 function setMetadata()
@@ -45,8 +41,10 @@ function setBarChart()
 {
 console.log('in setBarChart; ids '+ ids + ' values ' + values + ' hovertext ' + hovertext);
     var trace_bar = {
-        x: ids.slice(0,10),
-        y: values.slice(0,10).reverse(),
+        // x: ids.slice(0,10),
+        // y: values.slice(0,10).reverse(),
+        y: ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse(),
+        x: values.slice(0,10).reverse(),
         text: hovertext.slice(0,10).reverse(),
         type: 'bar',
         orientation: 'h'
@@ -65,9 +63,9 @@ function setBubbleChart(sample)
     console.log('in setBubbleChart ');
 
     var trace_bubble = {
-        x: ids,
-        y: values,
-        text: hoverText,
+        x: values,
+        y: ids,
+        text: hovertext,
         mode: 'markers',
         marker: {
             size: values,
@@ -97,7 +95,7 @@ function init()
     setBarChart();    
 
     //initialize bubble chart
-    //setBubbleChart(samplesNames[0]);
+    setBubbleChart();
 }
 
 //assign samples and metadata globals
