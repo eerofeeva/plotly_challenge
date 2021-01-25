@@ -3,7 +3,6 @@ var metadata;
 var samples;
 var resultsmetadata;
 var resultsarray;
-var teststring;
 var values;
 var ids;
 var hovertext;
@@ -39,10 +38,7 @@ function setMetadata()
 
 function setBarChart()
 {
-console.log('in setBarChart; ids '+ ids + ' values ' + values + ' hovertext ' + hovertext);
     var trace_bar = {
-        // x: ids.slice(0,10),
-        // y: values.slice(0,10).reverse(),
         y: ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse(),
         x: values.slice(0,10).reverse(),
         text: hovertext.slice(0,10).reverse(),
@@ -52,7 +48,7 @@ console.log('in setBarChart; ids '+ ids + ' values ' + values + ' hovertext ' + 
 
     var layout = {
         title:'Top 10 Bacterial Cultures',
-        margin: {t:30, l: 140}
+        margin: {t:30, l: 150}
     };
 
     Plotly.newPlot('bar', [trace_bar], layout)
@@ -60,8 +56,6 @@ console.log('in setBarChart; ids '+ ids + ' values ' + values + ' hovertext ' + 
 
 function setBubbleChart(sample)
 {
-    console.log('in setBubbleChart ');
-
     var trace_bubble = {
         x: values,
         y: ids,
@@ -79,7 +73,6 @@ function init()
 {
    //initialize selector
    var selDataset = d3.select("#selDataset");
-    console.log('init, sample Names ' + samplesNames[0]);
     samplesNames.forEach((sample) => {
     selDataset
       .append("option")
@@ -87,14 +80,14 @@ function init()
       .property("value", sample);
     });
 
-    //initialize metadata through optionChanged
+    //set initial metadata
     getResults(samplesNames[0]);
     setMetadata();
 
-    //initialize bar chart
+    //set initial bar chart
     setBarChart();    
 
-    //initialize bubble chart
+    //set initial bubble chart
     setBubbleChart();
 }
 
@@ -103,6 +96,5 @@ d3.json("samples.json").then(function(data) {
     samplesNames = data.names;
     metadata = data.metadata;
     samples = data.samples;
-    console.log("in getting samples, samples[0]: " + samples[0]);
     init();
 });
