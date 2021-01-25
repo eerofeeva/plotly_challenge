@@ -54,11 +54,11 @@ function setBarChart()
     Plotly.newPlot('bar', [trace_bar], layout)
 }
 
-function setBubbleChart(sample)
+function setBubbleChart()
 {
     var trace_bubble = {
-        x: values,
-        y: ids,
+        x: ids,
+        y: values,
         text: hovertext,
         mode: 'markers',
         marker: {
